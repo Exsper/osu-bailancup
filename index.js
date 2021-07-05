@@ -9,6 +9,7 @@ console.log("del [玩家名] 删除选手： del peppy");
 console.log("ra 显示选手recent排行（acc排序）");
 console.log("rc 显示选手recent排行（combo排序）");
 console.log("rs 显示选手recent排行（score排序）");
+console.log("某些failed成绩无法从api获取，所以该程序只能作为参考QwQ");
 
 const readline = require("readline");
 const rl = readline.createInterface({

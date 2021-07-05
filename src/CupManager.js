@@ -205,7 +205,7 @@ class ScoreOutputer {
             });
         }
         else {
-            output += "玩家名" + this.getSpaces(username_Length - 2) + "score" + this.getSpaces(score_Length - 4) + "combo" + this.getSpaces(combo_Length - 4) + " acc" + this.getSpaces(acc_Length - 4) + "\n";
+            output += "玩家名" + this.getSpaces(username_Length - 2) + "score" + this.getSpaces(score_Length - 4) + "combo" + this.getSpaces(combo_Length - 4) + " acc" + this.getSpaces(acc_Length - 4) + "　STAT　" + "\n";
             output += this.getLines(username_Length + score_Length + combo_Length + acc_Length + 15) + "\n";
             outputScores.map((os) => {
                 output += os.username + this.getSpaces(username_Length - os.username.length + 2) + os.score + this.getSpaces(score_Length - os.score.length + 2) + os.combo + this.getSpaces(combo_Length - os.combo.length + 2) + os.acc + this.getSpaces(acc_Length - os.acc.length + 2) + os.stat + "\n";
@@ -302,9 +302,15 @@ class CupManager {
         /**@type {Array<ScoreSimple>} */
         let resultDatas = [];
         for (let i = 0; i < users.length; i++) {
-            const result = await OsuApi.getUserRecent(users[i].userId, this.mode, this.apikey);
-            let scoreSimple = new Score(result[0], users[i], this.mode).toSimpleData();
-            resultDatas.push(scoreSimple);
+            try {
+                const result = await OsuApi.getUserRecent(users[i].userId, this.mode, this.apikey);
+                let scoreSimple = new Score(result[0], users[i], this.mode).toSimpleData();
+                resultDatas.push(scoreSimple);
+            }
+            catch (ex) {
+                console.log("获取" + users[i].username + "的成绩失败");
+                continue;
+            }
         }
         return resultDatas;
     }
@@ -314,6 +320,7 @@ class CupManager {
      */
     async showResult(method) {
         try {
+            console.log("获取数据中...");
             let resultDatas = await this.getRecentScores();
             if (resultDatas.length <= 0) return console.log("无数据");
             let scoreOutputer = new ScoreOutputer(resultDatas, method);
