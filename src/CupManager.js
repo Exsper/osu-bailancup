@@ -141,13 +141,10 @@ class ScoreOutputer {
     }
 
     getSpaces(num) {
-        let bnum = parseInt(num / 2);
-        let snum = num % 2;
         let output = "";
-        for (let i = 0; i < bnum; i++) {
-            output += "　";
+        for (let i = 0; i < num; i++) {
+            output += " ";
         }
-        if (snum > 0) output += " ";
         return output;
     }
 
@@ -161,7 +158,7 @@ class ScoreOutputer {
 
     output() {
         let needBeatmap = !this.isSameBeatmap();
-        let output = "成绩列表：\n";
+        let output = "成绩列表：（比赛指标：" + this.method + "）\n";
         if (this.isAllFail()) {
             // 全部失败，反转模式，大的获胜排在前
             if (this.method === "score") this.scoreSimples.sort((a, b) => b.score - a.score);
@@ -192,20 +189,29 @@ class ScoreOutputer {
             if (os.combo.length > combo_Length) combo_Length = os.combo.length;
             os.acc = ss.acc.toFixed(2) + "%";
             if (os.acc.length > acc_Length) acc_Length = os.acc.length;
-            os.stat = (ss.isFail) ? " FAILED " : " ALIVE ";
+            os.stat = (ss.isFail) ? "FAILED " : "PASS";
             os.beatmap_id = ss.beatmap_id;
             return os;
         });
+        // 与标题比较
+        if (username_Length < 7) username_Length = 7;
+        if (score_Length < 6) score_Length = 6;
+        if (combo_Length < 6) combo_Length = 6;
+        if (acc_Length < 4) acc_Length = 4;
+        username_Length += 2;
+        score_Length += 2;
+        combo_Length += 2;
+        acc_Length += 2;
         if (needBeatmap) {
             output += "注意：获取到谱面不相同！\n";
-            output += "玩家名" + this.getSpaces(username_Length - 3) + "score" + this.getSpaces(score_Length - 4) + "combo" + this.getSpaces(combo_Length - 4) + " acc" + this.getSpaces(acc_Length - 4) + "　STAT　" + " BeatmapId\n";
+            output += "player" + this.getSpaces(username_Length - 6) + "score" + this.getSpaces(score_Length-5) + "combo" + this.getSpaces(combo_Length-5) + "acc" + this.getSpaces(acc_Length-3) + "stat   " + "BeatmapId\n";
             output += this.getLines(username_Length + score_Length + combo_Length + acc_Length + 24) + "\n";
             outputScores.map((os) => {
-                output += os.username + this.getSpaces(username_Length - os.username.length + 2) + os.score + this.getSpaces(score_Length - os.score.length + 2) + os.combo + this.getSpaces(combo_Length - os.combo.length + 2) + os.acc + this.getSpaces(acc_Length - os.acc.length + 2) + os.stat + os.beatmap_id + "\n";
+                output += os.username + this.getSpaces(username_Length - os.username.length) + os.score + this.getSpaces(score_Length - os.score.length) + os.combo + this.getSpaces(combo_Length - os.combo.length) + os.acc + this.getSpaces(acc_Length - os.acc.length) + os.stat + os.beatmap_id + "\n";
             });
         }
         else {
-            output += "玩家名" + this.getSpaces(username_Length - 2) + "score" + this.getSpaces(score_Length - 4) + "combo" + this.getSpaces(combo_Length - 4) + " acc" + this.getSpaces(acc_Length - 4) + "　STAT　" + "\n";
+            output += "player" + this.getSpaces(username_Length - 6) + "score" + this.getSpaces(score_Length-5) + "combo" + this.getSpaces(combo_Length-5) + "acc" + this.getSpaces(acc_Length-3) + "stat" + "\n";
             output += this.getLines(username_Length + score_Length + combo_Length + acc_Length + 15) + "\n";
             outputScores.map((os) => {
                 output += os.username + this.getSpaces(username_Length - os.username.length + 2) + os.score + this.getSpaces(score_Length - os.score.length + 2) + os.combo + this.getSpaces(combo_Length - os.combo.length + 2) + os.acc + this.getSpaces(acc_Length - os.acc.length + 2) + os.stat + "\n";
