@@ -189,7 +189,7 @@ class ScoreOutputer {
             if (os.combo.length > combo_Length) combo_Length = os.combo.length;
             os.acc = ss.acc.toFixed(2) + "%";
             if (os.acc.length > acc_Length) acc_Length = os.acc.length;
-            os.stat = (ss.isFail) ? "FAILED " : "PASS";
+            os.stat = (ss.isFail) ? "FAILED " : "PASS   ";
             os.beatmap_id = ss.beatmap_id;
             return os;
         });
