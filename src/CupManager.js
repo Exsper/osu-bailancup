@@ -214,7 +214,7 @@ class ScoreOutputer {
             output += "player" + this.getSpaces(username_Length - 6) + "score" + this.getSpaces(score_Length-5) + "combo" + this.getSpaces(combo_Length-5) + "acc" + this.getSpaces(acc_Length-3) + "stat" + "\n";
             output += this.getLines(username_Length + score_Length + combo_Length + acc_Length + 15) + "\n";
             outputScores.map((os) => {
-                output += os.username + this.getSpaces(username_Length - os.username.length + 2) + os.score + this.getSpaces(score_Length - os.score.length + 2) + os.combo + this.getSpaces(combo_Length - os.combo.length + 2) + os.acc + this.getSpaces(acc_Length - os.acc.length + 2) + os.stat + "\n";
+                output += os.username + this.getSpaces(username_Length - os.username.length) + os.score + this.getSpaces(score_Length - os.score.length) + os.combo + this.getSpaces(combo_Length - os.combo.length) + os.acc + this.getSpaces(acc_Length - os.acc.length) + os.stat + "\n";
             });
         }
         return output;
